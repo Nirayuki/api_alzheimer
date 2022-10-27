@@ -70,7 +70,7 @@ router.post('/get', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'SELECT * FROM Familia WHERE idRemedios = ?',
+            'SELECT * FROM Remedio WHERE idRemedios = ?',
             idRemedios,
             (error, resultado, field) => {
     

@@ -21,7 +21,7 @@ router.post('/', (req, res, next) => {
                 }
     
                 conn.query(
-                    'INSERT INTO usuario (TIPO_CUIDADOR_PACIENTE, Email, Senha) VALUES (?,?,?)',
+                    'INSERT INTO Usuario (TIPO_CUIDADOR_PACIENTE, Email, Senha) VALUES (?,?,?)',
                    [tipo_cuidador , email, hash],
                     (error, resultado, field) => {
         
