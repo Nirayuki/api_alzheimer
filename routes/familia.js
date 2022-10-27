@@ -9,13 +9,12 @@ router.post('/register', (req, res, next) => {
     const parentesco = req.body.parentesco;
     const data_nascimento = req.body.data_nascimento;
     const telefone = req.body.telefone;
-    const IMGFotoFamiliar = req.body.IMGFotoFamiliar;
 
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'INSERT INTO Familia (idPaciente, Nome, Parentesco, DataNascimento, Telefone, IMGFotoFamiliar) VALUES (?,?,?,?,?,?)',
-            [idPaciente, nome, parentesco, data_nascimento, telefone, IMGFotoFamiliar],
+            'INSERT INTO Familia (idPaciente, Nome, Parentesco, DataNascimento, Telefone) VALUES (?,?,?,?,?)',
+            [idPaciente, nome, parentesco, data_nascimento, telefone],
             (error, resultado, field) => {
     
                 conn.release();
@@ -102,13 +101,12 @@ router.put('/edit', (req, res, next) => {
     const dataNascimento = req.body.dataNascimento;
     const telefone = req.body.telefone;
     const parentesco = req.body.parentesco;
-    const IMGFotoFamiliar = req.body.IMGFotoFamiliar;
 
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'UPDATE Familia SET Nome=?, Parentesco=?,DataNascimento=?, Telefone=?, IMGFotoFamiliar=? WHERE idFamilia = ?',
-            [nome, parentesco, dataNascimento, telefone, IMGFotoFamiliar, idFamilia],
+            'UPDATE Familia SET Nome=?, Parentesco=?,DataNascimento=?, Telefone=? WHERE idFamilia = ?',
+            [nome, parentesco, dataNascimento, telefone, idFamilia],
             (error, resultado, field) => {
     
                 conn.release();

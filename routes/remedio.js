@@ -13,7 +13,7 @@ router.post('/register', (req, res, next) => {
     mysql.getConnection((error, conn) => {
         conn.query(
             'INSERT INTO Remedio (idPaciente, NomeRedio, Dosagem, DiasDuracao) VALUES (?,?,?,?)',
-            [idPaciente, nomeRedio, Dosagem, DiasDuracao],
+            [idPaciente, nomeRedio, dosagem, diasDuracao],
             (error, resultado, field) => {
     
                 conn.release();
@@ -99,13 +99,12 @@ router.put('/edit', (req, res, next) => {
     const nomeRedio = req.body.nomeRedio;
     const dosagem = req.body.dosagem;
     const diasDuracao = req.body.diasDuracao;
-    const IMGFotoFamiliar = req.body.IMGFotoFamiliar;
 
 
     mysql.getConnection((error, conn) => {
         conn.query(
             'UPDATE Familia SET NomeRedio=?, Dosagem=?, DiasDuracao=? WHERE idRemedios = ?',
-            [nomeRedio, dosagem, diasDuracao, IMGFotoFamiliar, idRemedios],
+            [nomeRedio, dosagem, diasDuracao, idRemedios],
             (error, resultado, field) => {
     
                 conn.release();
