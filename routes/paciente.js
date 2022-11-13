@@ -130,4 +130,71 @@ router.post('/edit', (req, res, next) => {
 });
 
 
+router.post('/delete', (req, res, next) => {
+
+    const idPaciente = req.body.idPaciente;
+
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'DELETE FROM Paciente WHERE idPaciente = ?',
+            idPaciente,
+            (error, resultado, field) => {
+    
+                conn.release();
+
+                if (error) {
+                    res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                }
+
+                conn.query(
+                    'DELETE FROM Remedio WHERE idPaciente = ?',
+                    idPaciente,
+                    (error, resultado, field) => {
+            
+                        conn.release();
+        
+                        if (error) {
+                            res.status(500).send({
+                                error: error,
+                                response: null
+                            });
+                        }
+        
+                    }
+        
+                )
+
+                conn.query(
+                    'DELETE FROM Familia WHERE idPaciente = ?',
+                    idPaciente,
+                    (error, resultado, field) => {
+            
+                        conn.release();
+        
+                        if (error) {
+                            res.status(500).send({
+                                error: error,
+                                response: null
+                            });
+                        }
+        
+                    }
+        
+                )
+
+
+                res.status(201).send({
+                    mensagem: 'Paciente deletado com sucesso!'
+                })
+
+            }
+
+        )
+    })
+});
+
+
 module.exports = router;

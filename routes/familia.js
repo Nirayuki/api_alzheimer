@@ -128,4 +128,34 @@ router.put('/edit', (req, res, next) => {
     })
 });
 
+
+router.post('/delete', (req, res, next) => {
+
+    const idFamilia = req.body.idFamilia;
+
+    mysql.getConnection((error, conn) => {
+        conn.query(
+            'DELETE FROM Familia WHERE idFamilia = ?',
+            idFamilia,
+            (error, resultado, field) => {
+    
+                conn.release();
+
+                if (error) {
+                    res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                }
+
+                res.status(201).send({
+                    mensagem: 'Familiar deletado com sucesso!'
+                })
+
+            }
+
+        )
+    })
+});
+
 module.exports = router;
