@@ -22,6 +22,8 @@ const rotaFamilia = require('./routes/familia');
 
 const rotaRemedio = require('./routes/remedio');
 
+const rotaMemoria = require('./routes/memoria');
+
 app.get('/', (req, res) => {
     res.send("Caminho encontrado");
 })
@@ -37,5 +39,7 @@ app.use('/paciente', rotaPaciente);
 app.use('/familia', rotaFamilia);
 
 app.use('/remedio', rotaRemedio);
+
+app.use('/memoria', rotaMemoria);
 
 module.exports = app;

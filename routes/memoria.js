@@ -1,21 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('../mysql').pool;
+require('dotenv').config()
 
 router.post('/register', (req, res, next) => {
 
     const idPaciente = req.body.idPaciente;
-    const nomeRedio = req.body.nomeRedio;
-    const dosagem = req.body.dosagem;
-    const diasDuracao = req.body.diasDuracao;
-    const horario = req.body.horario;
+    const nome = req.body.nome;
+    const data = req.body.data;
+    const anotacao = req.body.anotacao;
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'INSERT INTO Remedio (idPaciente, NomeRedio, Dosagem, DiasDuracao, Horario) VALUES (?,?,?,?,?)',
-            [idPaciente, nomeRedio, dosagem, diasDuracao, horario],
+            'INSERT INTO Memoria (idPaciente, Nome, Data, Anotacao) VALUES (?,?,?,?)',
+            [idPaciente, nome, data, anotacao],
             (error, resultado, field) => {
-    
                 conn.release();
 
                 if (error) {
@@ -26,11 +25,9 @@ router.post('/register', (req, res, next) => {
                 }
 
                 res.status(201).send({
-                    mensagem: 'Remedio criado com sucesso!'
+                    mensagem: 'Memoria criada com sucesso!'
                 })
-  
             }
-
         )
     })
 });
@@ -42,13 +39,11 @@ router.post('/consulta', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'SELECT * FROM Remedio WHERE idPaciente = ?',
+            'SELECT * FROM Memoria WHERE idPaciente = ?',
             idPaciente,
             (error, resultado, field) => {
     
                 conn.release();
-
-                // resultadoRemedio = resultado;
 
                 if (error) {
                     res.status(500).send({
@@ -68,12 +63,12 @@ router.post('/consulta', (req, res, next) => {
 
 router.post('/get', (req, res, next) => {
 
-    const idRemedios = req.body.idRemedios;
+    const idMemoria = req.body.idMemoria;
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'SELECT * FROM Remedio WHERE idRemedios = ?',
-            idRemedios,
+            'SELECT * FROM Memoria WHERE idMemoria = ?',
+            idMemoria,
             (error, resultado, field) => {
     
                 conn.release();
@@ -97,17 +92,16 @@ router.post('/get', (req, res, next) => {
 
 router.put('/edit', (req, res, next) => {
 
-    const idRemedios = req.body.idRemedios;
-    const nomeRedio = req.body.nomeRedio;
-    const dosagem = req.body.dosagem;
-    const diasDuracao = req.body.diasDuracao;
-    const horario = req.body.horario;
+    const idMemoria = req.body.idMemoria;
+    const nome = req.body.nome;
+    const data = req.body.data;
+    const anotacao = req.body.anotacao;
 
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'UPDATE Remedio SET NomeRedio=?, Dosagem=?, DiasDuracao=?, Horario=? WHERE idRemedios = ?',
-            [nomeRedio, dosagem, diasDuracao, horario, idRemedios],
+            'UPDATE Memoria SET Nome=?, Data=?, Anotacao=? WHERE idMemoria = ?',
+            [nome, data, anotacao, idMemoria],
             (error, resultado, field) => {
     
                 conn.release();
@@ -120,7 +114,7 @@ router.put('/edit', (req, res, next) => {
                 }
 
                 res.status(201).send({
-                    mensagem: 'Remedios atualizado com sucesso!'
+                    mensagem: 'Memoria atualizada com sucesso!'
                 })
 
             }
@@ -132,12 +126,12 @@ router.put('/edit', (req, res, next) => {
 
 router.post('/delete', (req, res, next) => {
 
-    const idRemedios = req.body.idRemedios;
+    const idMemoria = req.body.idMemoria;
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'DELETE FROM Remedios WHERE idRemedios = ?',
-            idRemedios,
+            'DELETE FROM Memoria WHERE idMemoria = ?',
+            idMemoria,
             (error, resultado, field) => {
     
                 conn.release();
@@ -150,7 +144,7 @@ router.post('/delete', (req, res, next) => {
                 }
 
                 res.status(201).send({
-                    mensagem: 'Remedio removido com sucesso!'
+                    mensagem: 'Memoria removida com sucesso!'
                 })
 
             }
