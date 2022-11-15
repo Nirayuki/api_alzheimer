@@ -82,7 +82,7 @@ router.post('/consulta', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'SELECT * FROM Paciente WHERE idUsuario = ?',
+            'SELECT * FROM Paciente WHERE idCuidador = ?',
             idUsuario,
             (error, resultado, field) => {
     
