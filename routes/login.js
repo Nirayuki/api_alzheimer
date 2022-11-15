@@ -62,7 +62,7 @@ router.post('/', (req, res, next) => {
 
                                     getData(resultado, idCuidador);
             
-                                    res.send(data);
+                                    res.send({data: data});
                                 }
                             ) 
                         } else {
