@@ -78,12 +78,12 @@ router.post('/register', (req, res, next) => {
 
 router.post('/consulta', (req, res, next) => {
 
-    const idUsuario = req.body.idUsuario;
+    const idCuidador = req.body.idCuidador;
 
     mysql.getConnection((error, conn) => {
         conn.query(
             'SELECT * FROM Paciente WHERE idCuidador = ?',
-            idUsuario,
+            idCuidador,
             (error, resultado, field) => {
     
                 conn.release();
