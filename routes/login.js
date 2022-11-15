@@ -12,18 +12,24 @@ router.post('/', (req, res, next) => {
     const senha = req.body.senha;
 
     var idUsuario;
-    var idCuidador;
 
     const data = {
-        idCuidador: 0,
         idUsuario: 0,
         TIPO_CUIDADOR_PACIENTE: 0,
         Email: 0,
         Senha: 0
     }
 
-    getData = (resultado, result) => {
+    getDataCuidador = (resultado, result) => {
         data.idCuidador = result;
+        data.idUsuario = resultado[0].idUsuario;
+        data.TIPO_CUIDADOR_PACIENTE = resultado[0].TIPO_CUIDADOR_PACIENTE;
+        data.Email = resultado[0].Email;
+        data.Senha = resultado[0].Senha;
+    }
+
+    getDataPaciente = (resultado, result) => {
+        data.idPaciente = result;
         data.idUsuario = resultado[0].idUsuario;
         data.TIPO_CUIDADOR_PACIENTE = resultado[0].TIPO_CUIDADOR_PACIENTE;
         data.Email = resultado[0].Email;
@@ -43,28 +49,43 @@ router.post('/', (req, res, next) => {
 
                 idUsuario = resultado[0].idUsuario;
 
-                
                 if(resultado.length > 0) {
                     bcrypt.compare(senha, resultado[0].Senha, (error, response) => {
                         if (response) {
                             
-                            conn.query(
-                                'SELECT idCuidador FROM Cuidador WHERE idUsuario = ?',
-                                idUsuario,
-                                (error, result, field) => {
-                                    conn.release();
-                                    if (error) {
-                                        res.send({ error: error});
-                                    }
-            
-                                    
-                                    idCuidador = result[0].idCuidador;
 
-                                    getData(resultado, idCuidador);
-            
-                                    res.send({data: data});
-                                }
-                            ) 
+                            if(resultado[0].TIPO_CUIDADOR_PACIENTE == 2){
+                                conn.query(
+                                    'SELECT idCuidador FROM Cuidador WHERE idUsuario = ?',
+                                    idUsuario,
+                                    (error, result, field) => {
+                                        conn.release();
+                                        if (error) {
+                                            res.send({ error: error});
+                                        }
+                
+                                        getDataCuidador(resultado, result[0].idCuidador);
+                
+                                        res.send({data: data});
+                                    }
+                                ) 
+                            }else{
+                                conn.query(
+                                    'SELECT idPaciente FROM Paciente WHERE idUsuario = ?',
+                                    idUsuario,
+                                    (error, result, field) => {
+                                        conn.release();
+                                        if (error) {
+                                            res.send({ error: error});
+                                        }
+                
+                                        getDataPaciente(resultado, result[0].idPaciente);
+                
+                                        res.send({data: data});
+                                    }
+                                ) 
+                            }
+                            
                         } else {
                             res.send({message: "Login Incorreto"});
                         }
