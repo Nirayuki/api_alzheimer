@@ -42,4 +42,5 @@ app.use('/remedio', rotaRemedio);
 
 app.use('/memoria', rotaMemoria);
 
+
 module.exports = app;
