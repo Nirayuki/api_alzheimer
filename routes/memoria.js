@@ -3,6 +3,10 @@ const router = express.Router();
 const mysql = require('../mysql').pool;
 require('dotenv').config()
 
+router.get('/', (req, res, next) => {
+    res.status(201).send({mensagem: "Caminho encontrado"});
+})
+
 router.post('/register', (req, res, next) => {
 
     const idPaciente = req.body.idPaciente;
