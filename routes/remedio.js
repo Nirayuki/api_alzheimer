@@ -7,13 +7,13 @@ router.post('/register', (req, res, next) => {
     const idPaciente = req.body.idPaciente;
     const nomeRedio = req.body.nomeRedio;
     const dosagem = req.body.dosagem;
-    const diasDuracao = req.body.diasDuracao;
     const horario = req.body.horario;
+    const observacao = req.body.observacao;
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'INSERT INTO Remedio (idPaciente, NomeRedio, Dosagem, DiasDuracao, Horario) VALUES (?,?,?,?,?)',
-            [idPaciente, nomeRedio, dosagem, diasDuracao, horario],
+            'INSERT INTO Remedio (idPaciente, NomeRedio, Dosagem, Horario) VALUES (?,?,?,?,?)',
+            [idPaciente, nomeRedio, dosagem, horario, observacao],
             (error, resultado, field) => {
     
                 conn.release();
