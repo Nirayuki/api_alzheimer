@@ -20,59 +20,72 @@ router.post('/register', (req, res, next) => {
     var UsuarioID;
 
     mysql.getConnection((error, conn) => {
-        bcrypt.hash(senha, saltRounds, (err, hash) => {
+        conn.query( 
+            'SELECT * FROM Usuario WHERE Email = ?',
+        [email],
+        (error, resultado, field) => {
+            conn.release();
 
-            if(err) {
-                console.log(err)
-            }
-
-            conn.query(
-                'INSERT INTO Usuario (TIPO_CUIDADOR_PACIENTE, Email, Senha) VALUES (?,?,?)',
-               [tipo_cuidador , email, hash],
-                (error, resultado, field) => {
-   
-                    conn.release();
-
-                    UsuarioID = resultado.insertId
-   
-                    if (error) {
-                       res.status(500).send({
-                           error: error,
-                           response: null
-                        });
-                    }
-
-                    conn.query(
-                        'INSERT INTO Paciente (idUsuario, idCuidador, Nome, Data_Nascimento, Doenca, Observacoes) VALUES (?,?,?,?,?,?)',
-                        [UsuarioID, idCuidador, nome, data_nascimento, doenca, observacoes],
-                        (error, resultado, field) => {
-                
-                            conn.release();
+            if(resultado.length == 0) {
+                mysql.getConnection((error, conn) => {
+                    bcrypt.hash(senha, saltRounds, (err, hash) => {
             
-                            if (error) {
-                                res.status(500).send({
-                                    error: error,
-                                    response: null
-                                });
-                            }
-            
-                            res.status(201).send({
-                                mensagem: 'Paciente cadastrado com sucesso!'
-                            })
-            
+                        if(err) {
+                            console.log(err)
                         }
             
-                    )
-   
-               }
-           )
-   
-       }) 
+                        conn.query(
+                            'INSERT INTO Usuario (TIPO_CUIDADOR_PACIENTE, Email, Senha) VALUES (?,?,?)',
+                           [tipo_cuidador , email, hash],
+                            (error, resultado, field) => {
+               
+                                conn.release();
+            
+                                UsuarioID = resultado.insertId
+               
+                                if (error) {
+                                   res.status(500).send({
+                                       error: error,
+                                       response: null
+                                    });
+                                }
+            
+                                conn.query(
+                                    'INSERT INTO Paciente (idUsuario, idCuidador, Nome, Data_Nascimento, Doenca, Observacoes) VALUES (?,?,?,?,?,?)',
+                                    [UsuarioID, idCuidador, nome, data_nascimento, doenca, observacoes],
+                                    (error, resultado, field) => {
+                            
+                                        conn.release();
+                        
+                                        if (error) {
+                                            res.status(500).send({
+                                                error: error,
+                                                response: null
+                                            });
+                                        }
+                        
+                                        res.status(201).send({
+                                            mensagem: 'Paciente cadastrado com sucesso!'
+                                        })
+                        
+                                    }
+                        
+                                )
+               
+                           }
+                       )
+               
+                   })             
+                })
 
-
-
-        
+            }else{
+                res.send({message: "Email já existe"});
+            }
+            
+        })
     })
+
+    
 });
 
 
