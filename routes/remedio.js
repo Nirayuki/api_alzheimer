@@ -12,7 +12,7 @@ router.post('/register', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'INSERT INTO Remedio (idPaciente, NomeRedio, Dosagem, Horario, Obervacao) VALUES (?,?,?,?,?)',
+            'INSERT INTO Remedio (idPaciente, NomeRedio, Dosagem, Horario, Observacao) VALUES (?,?,?,?,?)',
             [idPaciente, nomeRedio, dosagem, horario, observacao],
             (error, resultado, field) => {
     
