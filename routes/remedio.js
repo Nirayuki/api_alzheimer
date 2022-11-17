@@ -137,7 +137,7 @@ router.post('/delete', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'DELETE FROM Remedios WHERE idRemedios = ?',
+            'DELETE FROM Remedio WHERE idRemedios = ?',
             idRemedios,
             (error, resultado, field) => {
     
