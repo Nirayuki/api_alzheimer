@@ -21,7 +21,7 @@ router.post('/', (req, res, next) => {
     }
 
     getDataCuidador = (resultado, result) => {
-        data.idCuidador = result;
+        data.idCuidador = resultado[0].idCuidador;
         data.idUsuario = resultado[0].idUsuario;
         data.TIPO_CUIDADOR_PACIENTE = resultado[0].TIPO_CUIDADOR_PACIENTE;
         data.Email = resultado[0].Email;
@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
     }
 
     getDataPaciente = (resultado, result) => {
-        data.idPaciente = result;
+        data.idPaciente = resultado[0].idPaciente;
         data.idUsuario = resultado[0].idUsuario;
         data.TIPO_CUIDADOR_PACIENTE = resultado[0].TIPO_CUIDADOR_PACIENTE;
         data.Email = resultado[0].Email;
