@@ -102,12 +102,13 @@ router.put('/edit', (req, res, next) => {
     const dosagem = req.body.dosagem;
     const diasDuracao = req.body.diasDuracao;
     const horario = req.body.horario;
+    const observacao = req.body.observacao;
 
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'UPDATE Remedio SET NomeRedio=?, Dosagem=?, DiasDuracao=?, Horario=? WHERE idRemedios = ?',
-            [nomeRedio, dosagem, diasDuracao, horario, idRemedios],
+            'UPDATE Remedio SET NomeRedio=?, Dosagem=?, Horario=?, Observacao=? WHERE idRemedios = ?',
+            [nomeRedio, dosagem, diasDuracao, horario, observacao, idRemedios],
             (error, resultado, field) => {
     
                 conn.release();
