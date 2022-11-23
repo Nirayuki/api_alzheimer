@@ -47,12 +47,10 @@ router.post('/', (req, res, next) => {
                     res.send({ error: error});
                 }
 
-                idUsuario = resultado[0].idUsuario;
-
                 if(resultado.length > 0) {
                     bcrypt.compare(senha, resultado[0].Senha, (error, response) => {
                         if (response) {
-                            
+                             idUsuario = resultado[0].idUsuario;
 
                             if(resultado[0].TIPO_CUIDADOR_PACIENTE == 2){
                                 conn.query(
@@ -91,7 +89,7 @@ router.post('/', (req, res, next) => {
                         }
                     })
                 } else {
-                    res.send({auth: false, message: "Email doesn't exist"});
+                    res.send({message: "Email doesn't exist"});
                 }
             }
         )
