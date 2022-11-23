@@ -189,22 +189,24 @@ router.post('/delete', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         conn.query(
-            'DELETE FROM Paciente WHERE idPaciente = ?',
-            idPaciente,
+            'SELECT * FROM Paciente WHERE idPaciente = ?',
+             idPaciente,
             (error, resultado, field) => {
-    
+        
                 conn.release();
-
+                
+                idUsuario = resultado[0].idUsuario;
+        
                 if (error) {
                     res.status(500).send({
                         error: error,
                         response: null
                     });
                 }
-
+        
                 conn.query(
-                    'DELETE FROM Remedio WHERE idPaciente = ?',
-                    idPaciente,
+                    'DELETE FROM Usuario WHERE idUsuario = ?',
+                     idUsuario,
                     (error, resultado, field) => {
             
                         conn.release();
@@ -215,76 +217,42 @@ router.post('/delete', (req, res, next) => {
                                 response: null
                             });
                         }
+
+                        res.status(201).send({
+                            mensagem: 'Paciente deletado com sucesso!'
+                        })
         
                     }
         
                 )
-
-                conn.query(
-                    'DELETE FROM Familia WHERE idPaciente = ?',
-                    idPaciente,
-                    (error, resultado, field) => {
-            
-                        conn.release();
         
-                        if (error) {
-                            res.status(500).send({
-                                error: error,
-                                response: null
-                            });
-                        }
-        
-                    }
-        
-                )
-
-                conn.query(
-                    'SELECT * FROM Paciente WHERE idPaciente = ?',
-                     idPaciente,
-                    (error, resultado, field) => {
-            
-                        conn.release();
-                        
-                        idUsuario = resultado.idUsuario;
-        
-                        if (error) {
-                            res.status(500).send({
-                                error: error,
-                                response: null
-                            });
-                        }
-
-                        conn.query(
-                            'DELETE FROM Usuario WHERE idUsuario = ?',
-                             idUsuario,
-                            (error, resultado, field) => {
-                    
-                                conn.release();
-                
-                                if (error) {
-                                    res.status(500).send({
-                                        error: error,
-                                        response: null
-                                    });
-                                }
-                
-                            }
-                
-                        )
-        
-                    }
-        
-                )
-
-                res.status(201).send({
-                    mensagem: 'Paciente deletado com sucesso!'
-                })
-
             }
-
+        
         )
+        
     })
 });
+
+
+
+
+// conn.query(
+//     'DELETE FROM Usuario WHERE idUsuario = ?',
+//         idUsuario,
+//         (error, resultado, field) => {
+        
+//             conn.release();
+    
+//                 if (error) {
+//                     res.status(500).send({
+//                         error: error,
+//                         response: null
+//                     });
+//                 }
+    
+//         }
+    
+//     )
 
 
 module.exports = router;
